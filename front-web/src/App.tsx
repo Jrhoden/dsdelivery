@@ -1,16 +1,14 @@
-import { useEffect } from 'react';
 import './App.css';
 import Navbar from './Navbar'
+import Home from './Home'
 
 function App() {
 
-  useEffect(() => {
-    //chamada para API para buscar produtos
-  }, [])
   return (
-    <div>
+    <>
      <Navbar />
-    </div>
+     <Home />
+    </>
   );
 }
 
