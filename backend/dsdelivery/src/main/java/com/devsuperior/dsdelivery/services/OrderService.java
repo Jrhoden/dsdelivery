@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +28,8 @@ public class OrderService {
 
 	@Transactional(readOnly = true)
 	public List<OrderDTO> findAll(){
-		return repository.findOrdersWithProducts().stream().map(p-> new ModelMapper().map(p, OrderDTO.class)).collect(Collectors.toList());
+		List<Order> orders =  repository.findOrdersWithProducts();
+		return getOrderDTOS(orders);
 	}
 
 	@Transactional
@@ -50,5 +52,15 @@ public class OrderService {
 		order.setStatus(OrderStatus.DELIVERED);
 		order = repository.save(order);
 		return new ModelMapper().map(order, OrderDTO.class);
+	}
+
+	private List<OrderDTO> getOrderDTOS(List<Order> orders) {
+		List<OrderDTO> orderDTOS = new ArrayList<>();
+		orders.forEach(order -> {
+			OrderDTO dto = new ModelMapper().map(order, OrderDTO.class);
+			dto.setTotal(order.getTotal());
+			orderDTOS.add(dto);
+		});
+		return orderDTOS;
 	}
 }

@@ -34,4 +34,12 @@ public class Order implements Serializable {
 		joinColumns = @JoinColumn(name = "order_id"),
 		inverseJoinColumns = @JoinColumn(name = "product_id"))
 	private final Set<Product> products = new HashSet<>();
+
+	public Double getTotal(){
+		double sum = 0.0;
+		for(Product product : products){
+			sum += product.getPrice();
+		}
+		return sum;
+	}
 }
